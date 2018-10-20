@@ -13,4 +13,8 @@ while True:
 
 print(products)
 
-print(products[0][0])
+# print(products[0][0])
+
+for p in products:
+	print(p[0])
+	print(p[1])
