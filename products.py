@@ -1,14 +1,19 @@
-import csv,codecs
+import csv,codecs,os
 products = []
 
 #讀取檔案，放入products[]
-with codecs.open('products.csv', 'r', encoding='utf-8_sig') as f:
-    for line in f:
-    	if '名稱' in line:
-    		continue	#繼續
-    	name, price = line.strip().split(',')
-    	products.append([name, price])
-print(products)
+
+if os.path.isfile('products.csv'): #檢查檔案在不在
+	print('yeah!找到檔案了')
+
+	with codecs.open('products.csv', 'r', encoding='utf-8_sig') as f:
+		for line in f:
+			if '名稱' in line:
+				continue	#繼續
+			name, price = line.strip().split(',')
+			products.append([name, price])
+else:
+	print('找不到檔案~~SORRY')
 
 
 #輸入產品及價錢
