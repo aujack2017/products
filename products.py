@@ -1,45 +1,62 @@
 import csv,codecs,os
-products = []
+
 
 #讀取檔案，放入products[]
-
-if os.path.isfile('products.csv'): #檢查檔案在不在
-	print('yeah!找到檔案了')
-
-	with codecs.open('products.csv', 'r', encoding='utf-8_sig') as f:
-		for line in f:
-			if '名稱' in line:
-				continue	#繼續
-			name, price = line.strip().split(',')
-			products.append([name, price])
-else:
-	print('找不到檔案~~SORRY')
+def read_file(filename):
+    products = []
+    with codecs.open(filename, 'r', encoding='utf-8_sig') as f:
+        for line in f:
+            if '名稱' in line:
+                continue    #繼續
+            name, price = line.strip().split(',')
+            products.append([name, price])
+    return products
 
 
 #輸入產品及價錢
-while True:
-    name = input('請輸入產品名稱 ：')
-    if name == 'q':
-    	break
-    price = int(input('請輸入商品價格：'))
-    products.append([name,price])
+def user_input(products):
+    while True:
+        name = input('請輸入產品名稱 ：')
+        if name == 'q':
+            break
+        price = int(input('請輸入商品價格：'))
+        products.append([name,price])
+    print(products)
+    return products
 
-print(products)
 
+#印出所有購買紀錄
+def print_products(products):
+    for p in products:
+        print(p[0] + '的價格是：' + str(p[1]))
+    # print(p[1])
 
 #寫入檔案
-for p in products:
-	print(p[0] + '的價格是：' + str(p[1]))
-	# print(p[1])
+def write_file(filename,products):
+#    with codecs.open('products.txt','w',encoding='utf-8_sig') as f:
+#          for p in products:
+#              f.write(p[0] + ',' + str(p[1]) + '\n')
 
-with codecs.open('products.txt','w',encoding='utf-8_sig') as f:
-  	for p in products:
-  	    f.write(p[0] + ',' + str(p[1]) + '\n')
+    with codecs.open(filename, 'w', encoding='utf-8_sig') as f:
+        f.write('名稱' + ',' + '數量' + '\n')
+        for p in products:
+            f.write(p[0] + ',' + str(p[1]) + '\n')
 
-with codecs.open('products.csv', 'w', encoding='utf-8_sig') as f:
-    f.write('名稱' + ',' + '數量' + '\n')
-    for p in products:
-        f.write(p[0] + ',' + str(p[1]) + '\n')
+def main():
+    filename = 'products.csv'
+    if os.path.isfile(filename): #檢查檔案在不在
+        print('yeah!找到檔案了')
+        products = read_file(filename)
+    else:
+        print('找不到檔案~~SORRY')
+    products = read_file('products.csv')
+    products = user_input(products)
+    print_products(products)
+    write_file('products.csv',products)
+
+main()
+
+
 
 
 
